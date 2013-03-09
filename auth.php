@@ -22,7 +22,7 @@ $config['accounts'][] = array('username'=>'jdoe', 'password'=>'abc123');
 $config['accounts'][] = array('username'=>'gadams', 'password'=>'qwerty');
 
 // Verify login information
-if(isset($_SERVER['PHP_AUTH_PW']) && isset($_SERVER['PHP_AUTH_USER']) {
+if(isset($_SERVER['PHP_AUTH_PW']) && isset($_SERVER['PHP_AUTH_USER'])) {
   $acc_found = false;
 
   foreach($config['accounts'] as $acc) {
