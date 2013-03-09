@@ -27,10 +27,10 @@ if(isset($_SERVER['PHP_AUTH_PW']) && isset($_SERVER['PHP_AUTH_USER'])) {
 
   foreach($config['accounts'] as $acc) {
     if($acc['username'] == $_SERVER['PHP_AUTH_USER']) {
+	  $acc_found = true;
+	
 	  if($_SERVER['PHP_AUTH_PW'] != $acc['password']) {
 	    logout(); //The password was wrong, we need to clear out any data.
-	  } else {
-	    $acc_found = true;
 	  }
 	}
   }
