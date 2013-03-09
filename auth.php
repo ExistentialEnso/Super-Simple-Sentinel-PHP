@@ -38,7 +38,7 @@ if(isset($_SERVER['PHP_AUTH_PW']) && isset($_SERVER['PHP_AUTH_USER'])) {
   if(!$acc_found) {
 	logout(); // No account was found, we also need to clear out any data
   }
-} else if (isset($_SERVER['PHP_AUTH_PW']) || isset($_SERVER['PHP_AUTH_USER']) {
+} else if (isset($_SERVER['PHP_AUTH_PW']) || isset($_SERVER['PHP_AUTH_USER'])) {
   logout(); // Somehow, only user or password is set, we need to clear out the data.
 }
 
