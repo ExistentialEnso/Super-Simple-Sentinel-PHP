@@ -29,16 +29,19 @@ $config['lockout_time'] = 60;
 // Don't mess with this line to avoid causing errors in some PHP configurations
 $config['accounts'] = array();
 
-// Add to the array sub-arrays with username/password values.
-$config['accounts'][] = array('username'=>'jdoe', 'password'=>'abc123');
-$config['accounts'][] = array('username'=>'gadams', 'password'=>'qwerty99');
+// Define username/password combinations (as many as you want as sub arrays)
+$config['accounts'] = array(
+  array('username'=>'jdoe', 'password'=>'abc123'),
+  array('username'=>'gsmith', 'password'=>'qwerty99')
+);
 
 /* END CONFIGURATION VARIABLES */
 
-// Ensure the session is setup properly.
+// 1. Ensure the session is setup properly.
 if(session_id() == '') session_start();
 if(!isset($_SESSION['failures'])) $_SESSION['failures'] = 0;
 
+// 2. Handle them having a lockout time set (be it expired or not)
 if(isset($_SESSION['lockout_until_time'])) {
   if($_SESSION['lockout_until_time'] < time()) {
     $_SESSION['failures'] = 0;
@@ -49,10 +52,10 @@ if(isset($_SESSION['lockout_until_time'])) {
   }
 }
 
-// 1. Determine which string function to use (based on case sensitivity settings).
+// 3. Determine which string function to use (based on case sensitivity settings).
 $cmp_function = ($config['usernames_case_sensitive']) ? "strcmp" : "strcasecmp";
 
-// 2. Verify login information, clearing out any invalid login info in the process
+// 4. Verify login information, clearing out any invalid login info in the process
 if(isset($_SERVER['PHP_AUTH_PW']) && isset($_SERVER['PHP_AUTH_USER'])) {
   $acc_found = false;
 
@@ -79,7 +82,7 @@ if(isset($_SERVER['PHP_AUTH_PW']) && isset($_SERVER['PHP_AUTH_USER'])) {
   logout(); // Somehow, only user or password is set, we need to clear out the data.
 }
 
-// 3. Require auth if no login information set
+// 5. Require auth if no login information set
 if (!isset($_SERVER['PHP_AUTH_PW'])) {
   header('WWW-Authenticate: Basic realm="'.$config['app_name'].'"');
   header('HTTP/1.0 401 Unauthorized');
@@ -95,6 +98,7 @@ function fail() {
 
   $_SESSION['failures']++;
   
+  // Handle them potentially hitting the maximum 
   if($_SESSION['failures'] >= $config['maximum_login_attempts']) {
     echo $config['not_authorized_message'];
     $_SESSION['lockout_until_time'] = time() + $config['lockout_time'];
