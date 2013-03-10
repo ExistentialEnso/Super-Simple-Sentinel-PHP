@@ -13,4 +13,5 @@ That's it!
 
 Version History
 ===============
+* v0.3 (3/10/12) - Added basic brute force protection (using sessions) and an option to enable case insensitive usernames.
 * v0.2 (3/9/12) - Added support for multiple accounts.
