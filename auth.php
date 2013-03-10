@@ -58,7 +58,7 @@ if(isset($_SERVER['PHP_AUTH_PW']) && isset($_SERVER['PHP_AUTH_USER'])) {
 
   // Find the account and check its password
   foreach($config['accounts'] as $acc) {
-  	if($cmp_function($acc['username'], $_SERVER['PHP_AUTH_USER']) == 0) {
+    if($cmp_function($acc['username'], $_SERVER['PHP_AUTH_USER']) == 0) {
       $acc_found = true;
     
       if($_SERVER['PHP_AUTH_PW'] != $acc['password']) {
