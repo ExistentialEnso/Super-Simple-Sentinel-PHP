@@ -23,7 +23,7 @@ $config['usernames_case_sensitive'] = false;
 // Sets how many times the user can attempt to login before it shows the error page
 $config['maximum_login_attempts'] = 6;
 
-// Sets how long (in seconds) to force the user to wait to login again.
+// Sets how long (in seconds) to force the user to wait to try login again after hitting the number of attempts above
 $config['lockout_time'] = 60;
 
 // Don't mess with this line to avoid causing errors in some PHP configurations
