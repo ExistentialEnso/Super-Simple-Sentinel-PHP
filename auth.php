@@ -26,9 +26,6 @@ $config['maximum_login_attempts'] = 6;
 // Sets how long (in seconds) to force the user to wait to try login again after hitting the number of attempts above
 $config['lockout_time'] = 60;
 
-// Don't mess with this line to avoid causing errors in some PHP configurations
-$config['accounts'] = array();
-
 // Define username/password combinations (as many as you want as sub arrays)
 $config['accounts'] = array(
   array('username'=>'jdoe', 'password'=>'abc123'),
