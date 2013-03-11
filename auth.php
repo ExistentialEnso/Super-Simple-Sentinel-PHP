@@ -4,7 +4,7 @@
 * @author Thorne Melcher <tmelcher@portdusk.com>
 * @copyright Thorne Melcher 2013
 * @license MIT
-* @version 0.3
+* @version 0.4
 *
 * Tweak the $config variables below, and just require_once() this file on any password-protected page before any data is sent.
 */
@@ -26,11 +26,24 @@ $config['maximum_login_attempts'] = 6;
 // Sets how long (in seconds) to force the user to wait to try login again after hitting the number of attempts above
 $config['lockout_time'] = 60;
 
+// A one-parameter hash function to run passwords through. Leave null to not hash passwords.
+$config['hash_function'] = null; //e.g. "sha1", "md5", or even a custom function!
+
 // Define username/password combinations (as many as you want as sub arrays)
+// NOTE: If hashing is turned on (by setting a function above, the passwords need to be the hashed values!
 $config['accounts'] = array(
-  array('username'=>'jdoe', 'password'=>'abc123'),
+  array('username'=>'jdoe', 'password'=>'abc'), 
   array('username'=>'gsmith', 'password'=>'qwerty99')
 );
+
+// Example, alternative database integration:
+/*
+$db = new \mysqli("localhost", "root", "password", "database_name");
+$result = $db->query("SELECT username, password FROM users");
+$config['accounts'] = array();
+while($account = $result->fetch_assoc()) {
+  $config['accounts'][] = $account;
+}
 
 /* END CONFIGURATION VARIABLES */
 
@@ -55,13 +68,19 @@ $cmp_function = ($config['usernames_case_sensitive']) ? "strcmp" : "strcasecmp";
 // 4. Verify login information, clearing out any invalid login info in the process
 if(isset($_SERVER['PHP_AUTH_PW']) && isset($_SERVER['PHP_AUTH_USER'])) {
   $acc_found = false;
+  $pw = $_SERVER['PHP_AUTH_PW'];
+  
+  // Hash the password, if necessary
+  if($config['hash_function'] != null) {
+    $pw = $config['hash_function']($_SERVER['PHP_AUTH_PW']);
+  }
 
   // Find the account and check its password
   foreach($config['accounts'] as $acc) {
     if($cmp_function($acc['username'], $_SERVER['PHP_AUTH_USER']) == 0) {
       $acc_found = true;
     
-      if($_SERVER['PHP_AUTH_PW'] != $acc['password']) {
+      if($pw != $acc['password']) {
         logout(); // The password was wrong, we need to clear out any data.
         fail(); // Notifies our velocity system of the failure
       }
