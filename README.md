@@ -2,7 +2,7 @@ Super-Simple-PHP-Auth
 =====================
 * Author: Thorne Melcher
 * License: MIT
-* Version: 0.3
+* Version: 0.4
 
 If you want a one file include, no database required authentication system for PHP, this will do the trick. Just edit the variables beginning with $config in the top of auth.php.
 
